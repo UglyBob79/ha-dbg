@@ -68,7 +68,7 @@ TOOLS = [
             "properties": {
                 "entity_id": {"type": "string", "description": "Filter by entity ID"},
                 "hours": {"type": "number", "description": "How many hours back (default 1)"},
-                "filter": {"type": "string", "description": "Filter by entity_id or name containing this string"},
+                "filter": {"type": "string", "description": "Filter by entity_id, name, or message containing this string"},
                 "domain": {"type": "string", "description": "Filter by domain, e.g. 'alexa', 'automation', 'light'"},
             },
         },
@@ -182,7 +182,7 @@ async def call_tool(name: str, arguments: dict) -> list[types.ContentBlock]:
         data = res.json()
         if filter_str:
             f = filter_str.lower()
-            data = [e for e in data if f in (e.get("entity_id") or "").lower() or f in (e.get("name") or "").lower()]
+            data = [e for e in data if f in (e.get("entity_id") or "").lower() or f in (e.get("name") or "").lower() or f in (e.get("message") or "").lower()]
         if "domain" in arguments:
             d = arguments["domain"].lower()
             data = [e for e in data if (e.get("domain") or "").lower() == d]
